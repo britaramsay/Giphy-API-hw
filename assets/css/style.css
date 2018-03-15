@@ -1,4 +1,8 @@
-#gif {
+.btn {
+    margin-right: 5px;
+}
+
+img {
     float: left;
     margin: 5px;
 }
