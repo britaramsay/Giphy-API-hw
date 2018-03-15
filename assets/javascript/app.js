@@ -29,6 +29,9 @@ $(document).ready(function () {
             $('#gifs').empty();
             // For each gif in the response
             (response.data).forEach (function (data) {
+                // Create div for image and rating
+                var imgDiv = $('<div>');
+                imgDiv.addClass('image');
                 // Create img element
                 var gif = $('<img>');
                 // Set src attribute to the still img url
@@ -37,8 +40,14 @@ $(document).ready(function () {
                 gif.attr('srcStill', data.images.fixed_height_still.url);
                 // Set srcMove attribute to the moving gif url
                 gif.attr('srcMove', data.images.fixed_height.url);
-                // Append to gifs div
-                $('#gifs').append(gif);                
+                // Create div for rating
+                var rating = $('<p>');
+                // Set text to image rating
+                rating.text('Rating: ' + data.rating);
+                // Append gif and raitng to imgDiv
+                imgDiv.append(gif, rating);  
+                // Append imgDiv to gifs element
+                $('#gifs').append(imgDiv);           
             });
             // When a image is clicked
             $("#gifs").on("click", 'img', function() {  
