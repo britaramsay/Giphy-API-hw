@@ -21,12 +21,23 @@ $(document).ready(function () {
             console.log(response);
             $('#gifs').empty();
             (response.data).forEach (function (data) {
-                var gif = $('<div>');
-                
-                gif.append($('<img>',{id:'gif',src:data.images.fixed_height_still.url}));
-    
+                var gif = $('<img>');
+                gif.attr('src', data.images.fixed_height_still.url);
+                gif.attr('srcMove', data.images.fixed_height.url);
+
+                // gif.html($('<img>',{id:'gif',src:gif.attr('src')}));
+                // $("#gifs").on("click", "#gif", function() {
+                //     $('this').html($('<img>',{id:'gif',src:gif.attr('srcMove')}));
+                // })
                 $('#gifs').append(gif);
+
+                
             });
+            $("#gifs").on("click", 'img', function() {
+                console.log($(this).attr('src') + $(this).attr('srcMove'));
+            
+                $(this).attr('src', $(this).attr('srcMove'));
+            })
             
 
         });
