@@ -1,8 +1,5 @@
 // List of topics for gifs
 var topics = ['cats', 'dogs', 'snakes', 'ferret'];
-var $this = '';
-var title;
-
 
 $(document).ready(function () { 
     renderButtons();
@@ -23,7 +20,6 @@ function renderButtons () {
         $('#topics').append(button);
     });
 }
-
 
 function callAPI () {  
     // Set title to data-name for that button
@@ -51,8 +47,7 @@ function callAPI () {
                 // Set srcStill attribute to the still img url
                 .attr('srcStill', data.images.fixed_height_still.url)
                 // Set srcMove attribute to the moving gif url
-                .attr('srcMove', data.images.fixed_height.url);
-                
+                .attr('srcMove', data.images.fixed_height.url);            
             // Create div for rating
             var rating = $('<p>')
                 // Set text to image rating
@@ -62,18 +57,14 @@ function callAPI () {
             // Append imgDiv to gifs element
             $('#gifs').append(imgDiv);           
         }); 
-       
-    
-    });
-    
+    });  
 }
      
 // When a topic button is clicked
 $(document).on("click", ".topic", callAPI);
+
  // When a image is clicked
  $(document).on("click", '.img', function() {  
-
-    console.log(title);
     // If image is still
     if($(this).attr('src') == $(this).attr('srcStill')) {
         // Change src to the moving image url          
@@ -86,4 +77,15 @@ $(document).on("click", ".topic", callAPI);
     }
 })
 
-// renderButtons();
+$(document).on("click", "#add-topic", function(event) {
+    event.preventDefault();
+    // This line of code will grab the input from the textbox
+    var topic = $("#topic-input").val().trim();
+
+    // The movie from the textbox is then added to our array
+    topics.push(topic);
+
+    // Calling renderButtons which handles the processing of our movie array
+    renderButtons();
+
+  });
