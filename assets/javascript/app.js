@@ -2,6 +2,7 @@
 var topics = ['cats', 'dogs', 'snakes', 'ferret'];
 
 $(document).ready(function () { 
+    // Create buttons when page is ready
     renderButtons();
 });
 
@@ -63,8 +64,8 @@ function callAPI () {
 // When a topic button is clicked
 $(document).on("click", ".topic", callAPI);
 
- // When a image is clicked
- $(document).on("click", '.img', function() {  
+// When a image is clicked
+$(document).on("click", '.img', function() {  
     // If image is still
     if($(this).attr('src') == $(this).attr('srcStill')) {
         // Change src to the moving image url          
@@ -78,14 +79,15 @@ $(document).on("click", ".topic", callAPI);
 })
 
 $(document).on("click", "#add-topic", function(event) {
+    // Prevent page from refreshing on form submit
     event.preventDefault();
-    // This line of code will grab the input from the textbox
+    // Trim the value entered into the text box
     var topic = $("#topic-input").val().trim();
-
-    // The movie from the textbox is then added to our array
-    topics.push(topic);
-
-    // Calling renderButtons which handles the processing of our movie array
+    // If the user entered something
+    if(topic.length > 0) {
+        // Push new topic to the topics array
+        topics.push(topic);
+    }
+    // Call render button to remake buttons with new topic added
     renderButtons();
-
-  });
+});
