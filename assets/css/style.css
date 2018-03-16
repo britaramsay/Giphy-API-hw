@@ -1,13 +1,25 @@
 .btn {
-    margin-right: 5px;
-    margin-top: 5px;
+    margin: 15px 5px 15px 0px;
+}
+
+.btn:first-child {
+    margin-left: 15px;
+}
+
+#topics-form {
+    margin: 0 0 15px 15px;
 }
 
 .image {
     float: left;
-    margin: 5px;
+    margin: 10px;
 }
 
 .image p {
     font-size: 20px;
+}
+
+#gifs {
+    clear: both;
+    margin-left: 15px;
 }

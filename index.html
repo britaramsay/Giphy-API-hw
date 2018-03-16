@@ -15,16 +15,25 @@
     </head>
     <body>              
           
-        <div id="topics"></div>
+        <div class="container">
+            <div clas="row">
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    <div id="topics"></div>
 
-        <form id="topics-form">
-            <label for="form-input">Add a New Category</label>
-            <input type="text" id="topic-input"><br>
-      
-            <input id="add-topic" type="submit" value="GO!">
-        </form>
-          
-        <div id="gifs"></div>
-        
+                    <form id="topics-form">
+                        <label for="form-input">Add a New Category</label><br>
+                        <input type="text" id="topic-input">
+                
+                        <input id="add-topic" type="submit" value="GO!">
+                    </form>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <h1>Giphy API</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div id="gifs"></div>
+            </div>
+        </div>
     </body>
 </html>
