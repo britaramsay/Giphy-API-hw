@@ -1,40 +1,43 @@
 // List of topics for gifs
 // var topics = ['axolotl', 'angler fish', 'vampire squid', 'blobfish'];
 var topics = ['Spagett', 'Dr. Steve Brule', 'Beaver Boys', "'The Snuggler'"];
+// Set favorites to an empty array
 var favorites = [];
 
 $(document).ready(function () { 
     // Create buttons when page is ready
     renderButtons();
     showFavorites();
+    // If favorites have been stored in local storage
+    if (localStorage.getItem("favsInStorage")) 
+        // Set favorites to the item in local storage
+        favorites = JSON.parse(localStorage.getItem("favsInStorage"));
 
-    if (typeof(Storage) !== "undefined") 
-        favorites = JSON.parse(localStorage.getItem("favvvs"));
-        console.log(favorites);
-
-
-    var favList = $('<p>')
+    // Create button to show or hide favorites
+    var showHideFavs = $('<p>')
         .text('Show Favorites (' + favorites.length + ')')
-        .addClass('showFavs')
-        .attr('showhide', 'hide');
-        $('#favs').append(favList);
+        .addClass('btn showFavs')
+        // Start with favorites hidden
+        .attr('state', 'hide');
+        $('#favs').append(showHideFavs);
+        // Hide favorite gifs
         $('#favss').hide();
-
 });
-
+// When a user clicks the show or hide favorites button
 $(document).on('click', '.showFavs', function () {
-    console.log(favorites);
-
-    if($(this).attr('showhide') == 'hide') {
-
-        $(this).text('Hide Favorites');
-        $(this).attr('showhide', 'show');
-        showFavorites();
+    // If favs are currently hidden
+    if($(this).attr('state') == 'hide') {
+        // Switch state to show
+        $(this).attr('state', 'show')
+        // Switch option to hide favorites
+               .text('Hide Favorites');
+        // Show favorites
+        // showFavorites();
         $('#favss').show();
     }
     else {
         $(this).text('Show Favorites (' + favorites.length + ')');
-        $(this).attr('showhide', 'hide');
+        $(this).attr('state', 'hide');
         $('#favss').hide();
     }
 });
@@ -126,9 +129,9 @@ function callAPI () {
 $(document).on("click", ".addFav", function() {
     favorites.push($(this).attr('src'));
     
-    localStorage.setItem("favvvs", JSON.stringify(favorites));
+    localStorage.setItem("favsInStorage", JSON.stringify(favorites));
 
-    if($('.showFavs').attr('showhide') == 'hide') 
+    if($('.showFavs').attr('state') == 'hide') 
         $('.showFavs').text('Show Favorites (' + favorites.length + ')');
 
     showFavorites();
