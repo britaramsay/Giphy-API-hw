@@ -18,9 +18,13 @@ $(document).ready(function () {
         .addClass('btn showFavs')
         // Start with favorites hidden
         .attr('state', 'hide');
-        $('#favs').append(showHideFavs);
-        // Hide favorite gifs
-        $('#favss').hide();
+    // Create button to remove all favorites
+    var removeFavs = $('<button>')
+        .text('Remove All Favorites')
+        .addClass('btn rmFavs');
+    $('#favs').append(showHideFavs, removeFavs);
+    // Hide favorite gifs
+    $('#favss').hide();
 });
 
 // When a user clicks the show or hide favorites button
@@ -41,6 +45,13 @@ $(document).on('click', '.showFavs', function () {
         $('#favss').hide();
     }
 });
+
+$(document).on('click', '.rmFavs', function() {
+    favorites = [];
+    // Store updated favorites array in local storage
+    localStorage.setItem("favsInStorage", JSON.stringify(favorites));
+    showFavorites();
+})
 
 function showFavorites() {
     // Empty first to no have duplicates
@@ -111,11 +122,12 @@ function callAPI () {
             // Make add to favorites element
             var addToFavs = $('<h4>')
                 // Set src to push to favorites array
-                .attr('src', data.images.fixed_height.url)
+                .attr('src', data.images.fixed_height_small.url)
                 .addClass('addFav');
-            if(favorites.indexOf(addToFavs.attr('src')) != -1) {
+            // Set text depending on if gif is already a favorite
+            // TODO: Make remove all favorites button
+            if(favorites.indexOf(addToFavs.attr('src')) != -1) 
                 addToFavs.text('Remove from Favorites');
-            }
             else
                 addToFavs.text('Add to Favorites');
             // Create div for rating
