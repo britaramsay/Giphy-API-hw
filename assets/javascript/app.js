@@ -1,11 +1,49 @@
 // List of topics for gifs
 // var topics = ['axolotl', 'angler fish', 'vampire squid', 'blobfish'];
 var topics = ['Spagett', 'Dr. Steve Brule', 'Beaver Boys', "'The Snuggler'"];
+var favorites = [];
 
 $(document).ready(function () { 
     // Create buttons when page is ready
     renderButtons();
+    showFavorites();
+
+    var favList = $('<p>')
+        .text('Show Favorites (' + favorites.length + ')')
+        .addClass('showFavs')
+        .attr('showhide', 'hide');
+        $('#favs').append(favList);
+        $('#favss').hide();
+
 });
+
+$(document).on('click', '.showFavs', function () {
+    if($(this).attr('showhide') == 'hide') {
+
+        $(this).text('Hide Favorites');
+        $(this).attr('showhide', 'show');
+        $('#favss').show();
+    }
+    else {
+        $(this).text('Show Favorites (' + favorites.length + ')');
+        $(this).attr('showhide', 'hide');
+        $('#favss').hide();
+    }
+});
+
+function showFavorites() {
+    $('#favss').empty();
+    // For each topic in the array 
+    favorites.forEach( function (favorite) {  
+
+    var gif = $('<img>')
+        .addClass('img-favs')
+        // Set src attribute to the still img url
+        .attr('src', favorite);
+
+        $('#favss').append(gif);
+    }); 
+}
 
 function renderButtons () { 
     $('#topics').empty();
@@ -16,11 +54,8 @@ function renderButtons () {
         button.addClass('btn btn-dark btn-lg topic');
         // Set text for button to the current topic
         button.text(topic);
-        if(topic == 'Carol' || topic == 'Chippy')
-            button.attr("data-name", topic + ' Tim and Eric');
-        else
         // Set data-name to the topic
-            button.attr("data-name", topic);
+        button.attr("data-name", topic);
         // Append to topics div
         $('#topics').append(button);
     });
@@ -59,17 +94,32 @@ function callAPI () {
                 // TODO: Custom file name isn't working
                 .attr("download", "giphy")
                 .attr('href', data.images.fixed_height.url);
+            
+            var addToFavs = $('<h4>')
+                .text('Add to Favorites')
+                .attr('src', data.images.fixed_height.url)
+                .addClass('addFav');
+
             // Create div for rating
             var rating = $('<p>')
                 // Set text to image rating
                 .text('Rating: ' + data.rating);
             // Append gif and raitng to imgDiv
-            imgDiv.append(gif, rating, downloads);  
+            imgDiv.append(gif, rating, downloads, addToFavs);  
             // Append imgDiv to gifs element
             $('#gifs').append(imgDiv);           
         }); 
     });  
 }
+
+$(document).on("click", ".addFav", function() {
+    favorites.push($(this).attr('src'));
+
+    if($('.showFavs').attr('showhide') == 'hide') 
+        $('.showFavs').text('Show Favorites (' + favorites.length + ')');
+
+    showFavorites();
+})
 
 // When a topic button is clicked
 $(document).on("click", ".topic", callAPI);
