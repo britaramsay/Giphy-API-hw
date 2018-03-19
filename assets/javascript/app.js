@@ -1,5 +1,6 @@
 // List of topics for gifs
-var topics = ['cats', 'dogs', 'snakes', 'ferret'];
+// var topics = ['axolotl', 'angler fish', 'vampire squid', 'blobfish'];
+var topics = ['Spagett', 'Dr. Steve Brule', 'Beaver Boys', "'The Snuggler'"];
 
 $(document).ready(function () { 
     // Create buttons when page is ready
@@ -12,11 +13,14 @@ function renderButtons () {
     topics.forEach( function (topic) {  
         // Create a button element
         var button = $('<button>');
-        button.addClass('btn btn-success topic');
+        button.addClass('btn btn-dark btn-lg topic');
         // Set text for button to the current topic
         button.text(topic);
+        if(topic == 'Carol' || topic == 'Chippy')
+            button.attr("data-name", topic + ' Tim and Eric');
+        else
         // Set data-name to the topic
-        button.attr("data-name", topic);
+            button.attr("data-name", topic);
         // Append to topics div
         $('#topics').append(button);
     });
@@ -48,19 +52,25 @@ function callAPI () {
                 // Set srcStill attribute to the still img url
                 .attr('srcStill', data.images.fixed_height_still.url)
                 // Set srcMove attribute to the moving gif url
-                .attr('srcMove', data.images.fixed_height.url);            
+                .attr('srcMove', data.images.fixed_height.url);
+            // Make a link to download a gif
+            var downloads = $('<a>')
+                .text('Download')
+                // TODO: Custom file name isn't working
+                .attr("download", "giphy")
+                .attr('href', data.images.fixed_height.url);
             // Create div for rating
             var rating = $('<p>')
                 // Set text to image rating
                 .text('Rating: ' + data.rating);
             // Append gif and raitng to imgDiv
-            imgDiv.append(gif, rating);  
+            imgDiv.append(gif, rating, downloads);  
             // Append imgDiv to gifs element
             $('#gifs').append(imgDiv);           
         }); 
     });  
 }
-     
+
 // When a topic button is clicked
 $(document).on("click", ".topic", callAPI);
 

@@ -1,13 +1,42 @@
 .btn {
-    margin: 15px 5px 15px 0px;
+    margin: 15px 5px 0px 0px;
+    background-color: rgb(10, 10, 10);
+    color: rgb(218, 216, 216);
 }
 
-.btn:first-child {
-    margin-left: 15px;
+.btn:hover, .btn:active, .btn:focus, .btn:visited, .btn:link {
+    color: rgb(10, 10, 10);
+    background-color: rgb(218, 216, 216);
+}
+
+#add-topic {
+    float: left;
+    margin-left: 5px;
 }
 
 #topics-form {
-    margin: 0 0 15px 15px;
+    margin: 15px 0 15px 0px;
+}
+
+#timeric {
+    text-align: center;
+    padding: 30px 10px;
+    border: 3px dashed darkcyan;
+    color: yellow;
+    border-radius: 25px;
+    margin-top: 15px;
+    background: url('../images/tande.jpg');
+    background-size: 90% 100%;
+}
+
+#timeric text {
+    box-shadow: 2px 2px 2px tomato;
+
+}
+
+.form-control {
+    width: 40%;
+    /* float: left; */
 }
 
 .image {
