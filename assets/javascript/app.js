@@ -7,14 +7,13 @@ var favorites = [];
 $(document).ready(function () { 
     // Create buttons when page is ready
     renderButtons();
-    showFavorites();
     // If favorites have been stored in local storage
     if (localStorage.getItem("favsInStorage")) 
         // Set favorites to the item in local storage
         favorites = JSON.parse(localStorage.getItem("favsInStorage"));
 
     // Create button to show or hide favorites
-    var showHideFavs = $('<p>')
+    var showHideFavs = $('<button>')
         .text('Show Favorites (' + favorites.length + ')')
         .addClass('btn showFavs')
         // Start with favorites hidden
@@ -23,6 +22,7 @@ $(document).ready(function () {
         // Hide favorite gifs
         $('#favss').hide();
 });
+
 // When a user clicks the show or hide favorites button
 $(document).on('click', '.showFavs', function () {
     // If favs are currently hidden
@@ -32,33 +32,33 @@ $(document).on('click', '.showFavs', function () {
         // Switch option to hide favorites
                .text('Hide Favorites');
         // Show favorites
-        // showFavorites();
+        showFavorites();
         $('#favss').show();
     }
     else {
-        $(this).text('Show Favorites (' + favorites.length + ')');
-        $(this).attr('state', 'hide');
+        $(this).attr('state', 'hide')
+               .text('Show Favorites (' + favorites.length + ')');
         $('#favss').hide();
     }
 });
 
 function showFavorites() {
+    // Empty first to no have duplicates
     $('#favss').empty();
-
-    // For each topic in the array 
+    // For each favorite in the array 
     favorites.forEach( function (favorite) { 
-         
+        // Create an image element
+        var gif = $('<img>')
+            .addClass('img-favs')
+            // Set src attribute to the img url
+            .attr('src', favorite);
 
-    var gif = $('<img>')
-        .addClass('img-favs')
-        // Set src attribute to the still img url
-        .attr('src', favorite);
-
-        $('#favss').append(gif);
+            $('#favss').append(gif);
     }); 
 }
 
 function renderButtons () { 
+    // Empty first to not have duplicates
     $('#topics').empty();
     
     // For each topic in the array 
@@ -108,12 +108,16 @@ function callAPI () {
                 // TODO: Custom file name isn't working
                 .attr("download", "giphy")
                 .attr('href', data.images.fixed_height.url);
-            
+            // Make add to favorites element
             var addToFavs = $('<h4>')
-                .text('Add to Favorites')
+                // Set src to push to favorites array
                 .attr('src', data.images.fixed_height.url)
                 .addClass('addFav');
-
+            if(favorites.indexOf(addToFavs.attr('src')) != -1) {
+                addToFavs.text('Remove from Favorites');
+            }
+            else
+                addToFavs.text('Add to Favorites');
             // Create div for rating
             var rating = $('<p>')
                 // Set text to image rating
@@ -126,14 +130,25 @@ function callAPI () {
     });  
 }
 
+// When a user wants to add a gif to their favorites
 $(document).on("click", ".addFav", function() {
-    favorites.push($(this).attr('src'));
-    
+    if(favorites.indexOf($(this).attr('src')) == -1) {
+        // Push src to favorites array
+        favorites.push($(this).attr('src'));
+        $(this).text('Remove from Favorites');
+    }
+    else {
+        // Remove from favorites
+        favorites.splice(favorites.indexOf($(this).attr('src')), 1);
+        $(this).text('Add to Favorites');
+    }
+    // Store updated favorites array in local storage
     localStorage.setItem("favsInStorage", JSON.stringify(favorites));
-
+    // If favorites are hidden now
     if($('.showFavs').attr('state') == 'hide') 
+        // Update show hide button with new favorites length
         $('.showFavs').text('Show Favorites (' + favorites.length + ')');
-
+    // Call showFavorites to add the new favorite gif
     showFavorites();
 })
 
