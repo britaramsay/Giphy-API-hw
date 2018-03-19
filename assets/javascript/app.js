@@ -8,6 +8,11 @@ $(document).ready(function () {
     renderButtons();
     showFavorites();
 
+    if (typeof(Storage) !== "undefined") 
+        favorites = JSON.parse(localStorage.getItem("favvvs"));
+        console.log(favorites);
+
+
     var favList = $('<p>')
         .text('Show Favorites (' + favorites.length + ')')
         .addClass('showFavs')
@@ -18,10 +23,13 @@ $(document).ready(function () {
 });
 
 $(document).on('click', '.showFavs', function () {
+    console.log(favorites);
+
     if($(this).attr('showhide') == 'hide') {
 
         $(this).text('Hide Favorites');
         $(this).attr('showhide', 'show');
+        showFavorites();
         $('#favss').show();
     }
     else {
@@ -33,8 +41,10 @@ $(document).on('click', '.showFavs', function () {
 
 function showFavorites() {
     $('#favss').empty();
+
     // For each topic in the array 
-    favorites.forEach( function (favorite) {  
+    favorites.forEach( function (favorite) { 
+         
 
     var gif = $('<img>')
         .addClass('img-favs')
@@ -47,6 +57,7 @@ function showFavorites() {
 
 function renderButtons () { 
     $('#topics').empty();
+    
     // For each topic in the array 
     topics.forEach( function (topic) {  
         // Create a button element
@@ -114,6 +125,8 @@ function callAPI () {
 
 $(document).on("click", ".addFav", function() {
     favorites.push($(this).attr('src'));
+    
+    localStorage.setItem("favvvs", JSON.stringify(favorites));
 
     if($('.showFavs').attr('showhide') == 'hide') 
         $('.showFavs').text('Show Favorites (' + favorites.length + ')');
