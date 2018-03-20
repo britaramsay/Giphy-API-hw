@@ -1,6 +1,7 @@
 // List of topics for gifs
-// var topics = ['axolotl', 'angler fish', 'vampire squid', 'blobfish'];
-var topics = ['Spagett', 'Dr. Steve Brule', 'Beaver Boys', "'The Snuggler'"];
+var topics = ['Angler fish', 'Axolotl', 'Bobbit worm', 'Vampire squid'];
+// var topics = ['Spagett', 'Dr. Steve Brule', 'Beaver Boys', "'The Snuggler'"];
+// var topics = ['Helsinki, Finland', 'Oslo, Norway', 'Reykjavik'];
 // Set favorites to an empty array
 var favorites = [];
 
@@ -22,6 +23,10 @@ $(document).ready(function () {
     var removeFavs = $('<button>')
         .text('Remove All Favorites')
         .addClass('btn rmFavs');
+    if(favorites.length < 1)
+        removeFavs.hide();
+    else
+        removeFavs.show();
     $('#favs').append(showHideFavs, removeFavs);
     // Hide favorite gifs
     $('#favss').hide();
@@ -47,9 +52,23 @@ $(document).on('click', '.showFavs', function () {
 });
 
 $(document).on('click', '.rmFavs', function() {
+    // show all prev favs as add to favs
+    var prevFavs = document.getElementsByClassName('addFav');
+
+    for(var i = 0; i < prevFavs.length; i++) {
+        if(favorites.indexOf(prevFavs[i].attributes.src.nodeValue) != -1) {
+            prevFavs[i].innerHTML = 'Add to Favorites';
+        }
+    }
+
     favorites = [];
+
+    if($('.showFavs').attr('state', 'hide'))
+        $('.showFavs').text('Show Favorites (' + favorites.length + ')');
     // Store updated favorites array in local storage
     localStorage.setItem("favsInStorage", JSON.stringify(favorites));
+
+    $('.rmFavs').hide();
     showFavorites();
 })
 
@@ -135,7 +154,7 @@ function callAPI () {
                 // Set text to image rating
                 .text('Rating: ' + data.rating);
             // Append gif and raitng to imgDiv
-            imgDiv.append(gif, rating, downloads, addToFavs);  
+            imgDiv.append(gif, rating, addToFavs, downloads);  
             // Append imgDiv to gifs element
             $('#gifs').append(imgDiv);           
         }); 
@@ -148,12 +167,16 @@ $(document).on("click", ".addFav", function() {
         // Push src to favorites array
         favorites.push($(this).attr('src'));
         $(this).text('Remove from Favorites');
+        $('.rmFavs').show();
     }
     else {
         // Remove from favorites
         favorites.splice(favorites.indexOf($(this).attr('src')), 1);
         $(this).text('Add to Favorites');
+        if(favorites.length < 1) $('.rmFavs').hide();
+
     }
+
     // Store updated favorites array in local storage
     localStorage.setItem("favsInStorage", JSON.stringify(favorites));
     // If favorites are hidden now
