@@ -1,7 +1,5 @@
 // List of topics for gifs
-var topics = ['Angler fish', 'Axolotl', 'Bobbit worm', 'Vampire squid'];
-// var topics = ['Spagett', 'Dr. Steve Brule', 'Beaver Boys', "'The Snuggler'"];
-// var topics = ['Helsinki, Finland', 'Oslo, Norway', 'Reykjavik'];
+var topics = ['Axolotl', 'Chimaera', 'Tomopteris', 'Vampire squid'];
 // Set favorites to an empty array
 var favorites = [];
 
@@ -21,7 +19,7 @@ $(document).ready(function () {
         .attr('state', 'hide');
     // Create button to remove all favorites
     var removeFavs = $('<button>')
-        .text('Remove All Favorites')
+        .text('Remove All')
         .addClass('btn rmFavs');
     if(favorites.length < 1)
         removeFavs.hide();
